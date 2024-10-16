@@ -47,18 +47,18 @@
             // 
             this.circleButton.Location = new System.Drawing.Point(93, 12);
             this.circleButton.Name = "circleButton";
-            this.circleButton.Size = new System.Drawing.Size(95, 23);
+            this.circleButton.Size = new System.Drawing.Size(75, 23);
             this.circleButton.TabIndex = 1;
-            this.circleButton.Text = "Окружность";
+            this.circleButton.Text = "Круг";
             this.circleButton.UseVisualStyleBackColor = true;
             // 
             // rectangleButton
             // 
-            this.rectangleButton.Location = new System.Drawing.Point(194, 12);
+            this.rectangleButton.Location = new System.Drawing.Point(174, 12);
             this.rectangleButton.Name = "rectangleButton";
-            this.rectangleButton.Size = new System.Drawing.Size(103, 23);
+            this.rectangleButton.Size = new System.Drawing.Size(75, 23);
             this.rectangleButton.TabIndex = 2;
-            this.rectangleButton.Text = "Прямоугольник";
+            this.rectangleButton.Text = "Квадрат";
             this.rectangleButton.UseVisualStyleBackColor = true;
             // 
             // panel
@@ -73,9 +73,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.circleButton);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.rectangleButton);
-            this.Controls.Add(this.circleButton);
             this.Controls.Add(this.lineButton);
             this.Name = "Form1";
             this.Text = "Form1";
