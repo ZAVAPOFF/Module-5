@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GraphicApp
@@ -16,17 +11,11 @@ namespace GraphicApp
         private Point endPoint;
         private bool drawing;
         private string currentShape = "Line";
+        private List<Shape> shapes = new List<Shape>();
+
         public Form1()
         {
             InitializeComponent();
-            this.Size = new Size(800, 600);
-
-            var panel = new Panel { Dock = DockStyle.Fill, BackColor = Color.White };
-            this.Controls.Add(panel);
-
-            var lineButton = new Button { Text = "Линия", Dock = DockStyle.Top };
-            var circleButton = new Button { Text = "Круг", Dock = DockStyle.Top };
-            var rectangleButton = new Button { Text = "Прямоугольник", Dock = DockStyle.Top };
 
             lineButton.Click += (s, e) => currentShape = "Line";
             circleButton.Click += (s, e) => currentShape = "Circle";
@@ -58,14 +47,17 @@ namespace GraphicApp
             {
                 drawing = false;
                 endPoint = e.Location;
-                using (Graphics g = panel.CreateGraphics())
-                {
-                    DrawShape(g);
-                }
+                shapes.Add(new Shape(currentShape, startPoint, endPoint));
+                panel.Invalidate();
             };
 
             panel.Paint += (s, e) =>
             {
+                foreach (var shape in shapes)
+                {
+                    shape.Draw(e.Graphics);
+                }
+
                 if (drawing)
                 {
                     DrawShape(e.Graphics);
@@ -75,16 +67,55 @@ namespace GraphicApp
 
         private void DrawShape(Graphics g)
         {
+            Pen pen = Pens.Black;
+
             switch (currentShape)
             {
                 case "Line":
-                    g.DrawLine(Pens.Black, startPoint, endPoint);
+                    g.DrawLine(pen, startPoint, endPoint);
                     break;
                 case "Circle":
-                    g.DrawEllipse(Pens.Black, GetRectangle(startPoint, endPoint));
+                    g.DrawEllipse(pen, GetRectangle(startPoint, endPoint));
                     break;
                 case "Rectangle":
-                    g.DrawRectangle(Pens.Black, GetRectangle(startPoint, endPoint));
+                    g.DrawRectangle(pen, GetRectangle(startPoint, endPoint));
+                    break;
+            }
+        }
+
+        private Rectangle GetRectangle(Point p1, Point p2)
+        {
+            return new Rectangle(Math.Min(p1.X, p2.X), Math.Min(p1.Y, p2.Y),
+                                 Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y));
+        }
+    }
+
+    public class Shape
+    {
+        public string ShapeType { get; }
+        public Point StartPoint { get; }
+        public Point EndPoint { get; }
+
+        public Shape(string shapeType, Point startPoint, Point endPoint)
+        {
+            ShapeType = shapeType;
+            StartPoint = startPoint;
+            EndPoint = endPoint;
+        }
+
+        public void Draw(Graphics g)
+        {
+            Pen pen = Pens.Black;
+            switch (ShapeType)
+            {
+                case "Line":
+                    g.DrawLine(pen, StartPoint, EndPoint);
+                    break;
+                case "Circle":
+                    g.DrawEllipse(pen, GetRectangle(StartPoint, EndPoint));
+                    break;
+                case "Rectangle":
+                    g.DrawRectangle(pen, GetRectangle(StartPoint, EndPoint));
                     break;
             }
         }
@@ -96,7 +127,3 @@ namespace GraphicApp
         }
     }
 }
-
-
-    
-
